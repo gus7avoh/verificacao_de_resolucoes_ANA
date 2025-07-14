@@ -140,12 +140,25 @@ def Verificar_alteracao():
     return modificacao
 
 
+def atualisar_json_antigo():
+    try:
+        with open(CAMINHO_JSON_ATUAL, 'r', encoding='utf-8') as atual:
+            dados_atual = json.load(atual)
+
+        salvar_json(dados_atual, CAMINHO_JSON_ANTIGO)
+
+    except Exception as erro:
+        print(f"erro: {erro}")
+
+
+
+
 def main():
     chrome_options = Options()
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--disable-extensions")
     chrome_options.add_argument("--disable-notifications")
-    # chrome_options.add_argument("--headless") 
+    chrome_options.add_argument("--headless") 
 
     service = Service(CHROME_DRIVER_PATH)
     driver = webdriver.Chrome(service=service, options=chrome_options)
@@ -169,6 +182,9 @@ def main():
             salvar_json(alteracoes, CAMINHO_JSON_ALTERACOES)
         else:
             print("Nenhuma alteração encontrada.")
+
+        atualisar_json_antigo()
+
 
     except Exception as e:
         print(f"Erro inesperado: {e}")
