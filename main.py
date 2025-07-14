@@ -13,7 +13,7 @@ import os
 
 CHROME_DRIVER_PATH = r"D:\chromedriver-win64\chromedriver.exe"
 TARGET_URL = "https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/normativos-e-resolucoes/resolucoes"
-CAMINHO_JSON = r"D:\cod\Arsae\Automatiza_arsae\automacao_1\resolucoes.json"
+CAMINHO_JSON = r"D:\cod\Arsae\Automatiza_arsae\verificacao_de_resolucoes_ANA\resolucoes.json"
 
 
 def aceitar_cookies(driver):
