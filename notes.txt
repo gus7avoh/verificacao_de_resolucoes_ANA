@@ -1,0 +1,9 @@
+- Tratar a entrada dos Links para que somente a url entre 
+
+- Modificar a nomeclatura do dicionario 
+
+- Criar um json com arquivos antigos e um que vai ser o json com os novos 
+
+- Criar metodo que vai Comparar todas as mudanças presentes no novo arquivo e vai criar um novo json com os novos dados 
+
+- Enviar um email notificando as mudaças e descrevelas individualmente 
