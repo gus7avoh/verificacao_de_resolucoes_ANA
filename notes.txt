@@ -6,6 +6,7 @@
 
 - remover o comentario dos comando de ajustar os arquivos Json
 
+-testar se o email vai ser eviado se não tiver atualizações
 
 
 

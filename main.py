@@ -209,7 +209,7 @@ def main():
 
     try:
         #limpar_json_alteracoes()
-        
+
         teste = True
         if teste  == False:
             print(f"Acessando a URL: {TARGET_URL}")
@@ -233,8 +233,8 @@ def main():
         with open(CAMINHO_JSON_ALTERACOES, 'r', encoding='utf-8') as arquivo:
             dados = json.load(arquivo)
         Enviar_email_alteracoes_outlook(dados)
+
         #atualisar_json_antigo()
-        
 
     except Exception as e:
         print(f"Erro inesperado: {e}")
