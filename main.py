@@ -13,7 +13,9 @@ import os
 
 CHROME_DRIVER_PATH = r"D:\chromedriver-win64\chromedriver.exe"
 TARGET_URL = "https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/normativos-e-resolucoes/resolucoes"
-CAMINHO_JSON = r"D:\cod\Arsae\Automatiza_arsae\verificacao_de_resolucoes_ANA\resolucoes.json"
+CAMINHO_JSON_ATUAL= r"D:\cod\Arsae\Automatiza_arsae\verificacao_de_resolucoes_ANA\atual.json"
+CAMINHO_JSON_ANTIGO= r"D:\cod\Arsae\Automatiza_arsae\verificacao_de_resolucoes_ANA\antigo.json"
+CAMINHO_JSON_ALTERACOES= r"D:\cod\Arsae\Automatiza_arsae\verificacao_de_resolucoes_ANA\alteracoes.json"
 
 
 def aceitar_cookies(driver):
@@ -108,6 +110,31 @@ def salvar_json(dados, caminho_arquivo):
     except Exception as e:
         print(f"Erro ao salvar arquivo JSON: {e}")
 
+def Verificar_alteracao():
+    novos_itens = []
+    try:
+        with open(CAMINHO_JSON_ANTIGO, 'r', encoding='utf-8') as antigo:
+            dados_antigo = json.load(antigo)
+
+        with open(CAMINHO_JSON_ATUAL, 'r', encoding='utf-8') as atual:
+            dados_atual = json.load(atual)
+
+        # Extrair os IDs únicos do JSON antigo
+        ids_antigos = set(item['id_div'] for item in dados_antigo)
+
+        # Verificar quais itens do atual não estão no antigo
+        for item in dados_atual:
+            if item['id_div'] not in ids_antigos:
+                novos_itens.append(item)
+
+        print(f"{len(novos_itens)} novo(s) item(ns) detectado(s).")
+
+    except Exception as erro:
+        print(f"Erro: {erro}")
+
+    return novos_itens
+
+
 def main():
     chrome_options = Options()
     chrome_options.add_argument("--start-maximized")
@@ -128,10 +155,15 @@ def main():
         dados_resolucoes = extrair_dados(driver)
 
         if dados_resolucoes:
-            # Salvar dados em JSON
-            salvar_json(dados_resolucoes, CAMINHO_JSON)
+            salvar_json(dados_resolucoes, CAMINHO_JSON_ATUAL)
         else:
             print("Nenhuma resolução encontrada.")
+    
+        alteracoes = Verificar_alteracao()
+        if alteracoes:
+            salvar_json(alteracoes, CAMINHO_JSON_ALTERACOES)
+        else:
+            print("Nenhuma alteração encontrada.")
 
     except Exception as e:
         print(f"Erro inesperado: {e}")
