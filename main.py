@@ -153,8 +153,6 @@ def atualisar_json_antigo():
     except Exception as erro:
         print(f"erro: {erro}")
 
-import win32com.client
-
 def limpar_json_alteracoes():
     try:
         with open(CAMINHO_JSON_ALTERACOES, 'w', encoding='utf-8') as arquivo:
