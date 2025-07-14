@@ -1,7 +1,10 @@
 
 - Enviar um email notificando as mudaças e descrevelas individualmente 
 
-- Depois de enviar os emails o json de alteracoes deve ser resetado
+
+- modificar o main para tirar o codigo do teste para email,
+
+- remover o comentario dos comando de ajustar os arquivos Json
 
 
 

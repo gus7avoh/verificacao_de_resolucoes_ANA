@@ -1,7 +1,7 @@
 [
   {
-    "id_div": "resolucao_4002025",
-    "Titulo": "Resolução Nº 400, de 03/07/2025",
+    "id_div": "resolucao_5002025",
+    "Titulo": "Resolução Nº 500, de 03/07/2025",
     "Subtitulo": [
       "Ato Normativo",
       "Dispõe sobre a política de teste em automações desenvolvidas na Arsae, no âmbito da Agência Nacional de Águas e Saneamento Básico (ANA)."
@@ -18,5 +18,25 @@
     ],
     "url": "http://arquivos.ana.gov.br/_viewpdf/web/?file=https://arquivos.ana.gov.br/resolucoes/2025/0253-2025_Ato_Normativo_03072025_20250707082717.pdf?12:10:42",
     "estado": "adicionado"
+  },
+  {
+    "id_div": "resolucao_2522025",
+    "Titulo": "Anexo de Resolução Nº 252, de 02/07/2025",
+    "Subtitulo": [
+      "Anexo de Ato Normativo",
+      "Alteram os Anexos I e II da Resolução ANA nº 246, de 17 de março de 2025, que aprova o Plano de Gestão Anual – PGA referente ao ano de 2025 para o Projeto de Integração do Rio São Francisco com Bacias Hidrográficas do Nordeste Setentrional – PISF"
+    ],
+    "url": "http://arquivos.ana.gov.br/_viewpdf/web/?file=https://arquivos.ana.gov.br/resolucoes/2025/0252-2025_Anexo_de_Ato_Normativo_02072025_20250704145341.pdf?12:10:42",
+    "estado": "adicionado"
+  },
+  {
+    "id_div": "resolucao_4002025",
+    "Titulo": "Resolução Nº 400, de 03/07/2025",
+    "Subtitulo": [
+      "Ato Normativo",
+      "Dispõe sobre a política de teste em automações desenvolvidas na Arsae, no âmbito da Agência Nacional de Águas e Saneamento Básico (ANA)."
+    ],
+    "url": "http://arquivos.ana.gov.br/_viewpdf/web/?file=https://arquivos.ana.gov.br/resolucoes/2025/0253-2025_Ato_Normativo_03072025_20250707082717.pdf?12:10:42",
+    "estado": "removido"
   }
 ]

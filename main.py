@@ -9,6 +9,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import time
 import json
 import os
+import win32com.client as win32
 
 
 
@@ -17,7 +18,7 @@ TARGET_URL = "https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/nor
 CAMINHO_JSON_ATUAL= r"D:\cod\Arsae\Automatiza_arsae\verificacao_de_resolucoes_ANA\atual.json"
 CAMINHO_JSON_ANTIGO= r"D:\cod\Arsae\Automatiza_arsae\verificacao_de_resolucoes_ANA\antigo.json"
 CAMINHO_JSON_ALTERACOES= r"D:\cod\Arsae\Automatiza_arsae\verificacao_de_resolucoes_ANA\alteracoes.json"
-LISTA_EMAILS = ["gustavo.maciel@arsae.com.br"]
+LISTA_EMAILS = ["gustavoh.a.m1409@gmail.com"]
 
 
 def aceitar_cookies(driver):
@@ -154,6 +155,14 @@ def atualisar_json_antigo():
 
 import win32com.client
 
+def limpar_json_alteracoes():
+    try:
+        with open(CAMINHO_JSON_ALTERACOES, 'w', encoding='utf-8') as arquivo:
+            json.dump([], arquivo, indent=2, ensure_ascii=False)
+
+        print("JSON de alterações limpo com sucesso.")
+    except Exception as erro:
+        print(f"Erro ao limpar JSON de alterações: {erro}")
 
 
 def Enviar_email_alteracoes_outlook(alteracoes):
@@ -173,7 +182,7 @@ def Enviar_email_alteracoes_outlook(alteracoes):
             corpo_email += "-" * 40 + "\n\n\n"
 
         # Inicializa o Outlook
-        outlook = win32com.client.Dispatch("Outlook.Application")
+        outlook = win32.Dispatch('outlook.application')
         mail = outlook.CreateItem(0)  # 0 = MailItem
 
         # Define os campos do e-mail
@@ -181,14 +190,12 @@ def Enviar_email_alteracoes_outlook(alteracoes):
         mail.Subject = "Alterações Detectadas no Sistema"
         mail.Body = corpo_email
 
-        # Envia o e-mail
         mail.Send()
-
+    
         print("E-mail enviado com sucesso via Outlook.")
 
     except Exception as erro:
         print(f"Erro ao enviar e-mail via Outlook: {erro}")
-
 
 
 def main():
@@ -203,18 +210,20 @@ def main():
     wait = WebDriverWait(driver, 15)
 
     try:
-        print(f"Acessando a URL: {TARGET_URL}")
-        driver.get(TARGET_URL)
+        teste = True
+        if teste  == False:
+            print(f"Acessando a URL: {TARGET_URL}")
+            driver.get(TARGET_URL)
 
-        aceitar_cookies(driver)
+            aceitar_cookies(driver)
 
-        dados_resolucoes = extrair_dados(driver)
+            dados_resolucoes = extrair_dados(driver)
 
-        if dados_resolucoes:
-            salvar_json(dados_resolucoes, CAMINHO_JSON_ATUAL)
-        else:
-            print("Nenhuma resolução encontrada.")
-    
+            if dados_resolucoes:
+                salvar_json(dados_resolucoes, CAMINHO_JSON_ATUAL)
+            else:
+                print("Nenhuma resolução encontrada.")
+        
         alteracoes = Verificar_alteracao()
         if alteracoes:
             salvar_json(alteracoes, CAMINHO_JSON_ALTERACOES)
@@ -224,8 +233,8 @@ def main():
         with open(CAMINHO_JSON_ALTERACOES, 'r', encoding='utf-8') as arquivo:
             dados = json.load(arquivo)
         Enviar_email_alteracoes_outlook(dados)
-        atualisar_json_antigo()
-
+        #atualisar_json_antigo()
+        #limpar_json_alteracoes()
 
     except Exception as e:
         print(f"Erro inesperado: {e}")
