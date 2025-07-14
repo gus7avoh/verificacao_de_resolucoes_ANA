@@ -208,6 +208,8 @@ def main():
     wait = WebDriverWait(driver, 15)
 
     try:
+        #limpar_json_alteracoes()
+        
         teste = True
         if teste  == False:
             print(f"Acessando a URL: {TARGET_URL}")
@@ -232,7 +234,7 @@ def main():
             dados = json.load(arquivo)
         Enviar_email_alteracoes_outlook(dados)
         #atualisar_json_antigo()
-        #limpar_json_alteracoes()
+        
 
     except Exception as e:
         print(f"Erro inesperado: {e}")
