@@ -111,7 +111,7 @@ def salvar_json(dados, caminho_arquivo):
         print(f"Erro ao salvar arquivo JSON: {e}")
 
 def Verificar_alteracao():
-    novos_itens = []
+    modificacao = []
     try:
         with open(CAMINHO_JSON_ANTIGO, 'r', encoding='utf-8') as antigo:
             dados_antigo = json.load(antigo)
@@ -119,20 +119,25 @@ def Verificar_alteracao():
         with open(CAMINHO_JSON_ATUAL, 'r', encoding='utf-8') as atual:
             dados_atual = json.load(atual)
 
-        # Extrair os IDs únicos do JSON antigo
-        ids_antigos = set(item['id_div'] for item in dados_antigo)
 
-        # Verificar quais itens do atual não estão no antigo
+        ids_antigos = set(item['id_div'] for item in dados_antigo)
         for item in dados_atual:
             if item['id_div'] not in ids_antigos:
-                novos_itens.append(item)
+                item["estado"] = "adicionado"
+                modificacao.append(item)
 
-        print(f"{len(novos_itens)} novo(s) item(ns) detectado(s).")
+
+        ids_atual = set(item['id_div'] for item in dados_atual)
+        for item in dados_antigo:
+            if item['id_div'] not in ids_atual:
+                item["estado"] = "removido"
+                modificacao.append(item)
+
 
     except Exception as erro:
         print(f"Erro: {erro}")
 
-    return novos_itens
+    return modificacao
 
 
 def main():

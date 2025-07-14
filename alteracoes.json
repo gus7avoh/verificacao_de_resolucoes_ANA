@@ -6,6 +6,17 @@
       "Resolução teste",
       "Resolução implantada para teste de integração"
     ],
-    "url": "http://arquivos.ana.gov.br/_viewpdf/web/?file=https://arquivos.ana.gov.br/resolucoes/2025/0NaN-2025_Ato_Normativo_03072025_20250708084656.pdf?10:51:15"
+    "url": "http://arquivos.ana.gov.br/_viewpdf/web/?file=https://arquivos.ana.gov.br/resolucoes/2025/0NaN-2025_Ato_Normativo_03072025_20250708084656.pdf?10:51:15",
+    "estado": "adicionado"
+  },
+  {
+    "id_div": "resolucao_2542025",
+    "Titulo": "Resolução Nº 254, de 03/07/2025",
+    "Subtitulo": [
+      "Ato Normativo",
+      "Aprova a Política de Backup e suas regras no âmbito da Agência Nacional de Águas e Saneamento Básico (ANA)."
+    ],
+    "url": "http://arquivos.ana.gov.br/_viewpdf/web/?file=https://arquivos.ana.gov.br/resolucoes/2025/0NaN-2025_Ato_Normativo_03072025_20250708084656.pdf?10:57:38",
+    "estado": "removido"
   }
 ]

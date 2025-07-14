@@ -1,5 +1,4 @@
-
-- Criar metodo que vai Comparar todas as mudanças presentes no novo arquivo e vai criar um novo json com os novos dados 
+- ao final do programa o json antigo deve receber todos os dados do atual
 
 - Enviar um email notificando as mudaças e descrevelas individualmente 
 
