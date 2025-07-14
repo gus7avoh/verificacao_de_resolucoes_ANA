@@ -25,7 +25,20 @@ def aceitar_cookies(driver):
     except (NoSuchElementException, TimeoutException):
         print("Botão de cookies não encontrado — seguindo mesmo assim.")
 
+def Tratar_url(texto):
+    """
+    Extrai e retorna o número da resolução a partir do parâmetro 'onclick',
+    como em: abreArquivo('URL_AQUI')
+    """
+    if not texto.startswith("abreArquivo("):
+        return None 
 
+    try:
+        # Remove o prefixo "abreArquivo('"
+        url = texto.split("abreArquivo('")[1].split("')")[0]
+        return url
+    except IndexError:
+        return None
 
 def extrair_dados(driver):
     try:
@@ -51,12 +64,13 @@ def extrair_dados(driver):
                 conteudo_b = div.find_element(By.CSS_SELECTOR, ".titulo_resolucao a b").text
                 conteudos_i = [i.text for i in div.find_elements(By.TAG_NAME, "i")]
                 onclick_content = div.find_element(By.CSS_SELECTOR, "a.ico_pdf").get_attribute('onclick')
+                url = Tratar_url(onclick_content)
 
                 resolucao_data = {
                     'id_div': id_div,
-                    'conteudo_b': conteudo_b,
-                    'conteudos_i': conteudos_i,
-                    'onclick_content': onclick_content
+                    'Titulo': conteudo_b,
+                    'Subtitulo': conteudos_i,
+                    'url': url
                 }
 
                 resolucoes_dados.append(resolucao_data)
@@ -99,7 +113,7 @@ def main():
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--disable-extensions")
     chrome_options.add_argument("--disable-notifications")
-    # chrome_options.add_argument("--headless")  # opcional
+    # chrome_options.add_argument("--headless") 
 
     service = Service(CHROME_DRIVER_PATH)
     driver = webdriver.Chrome(service=service, options=chrome_options)
@@ -119,7 +133,6 @@ def main():
         else:
             print("Nenhuma resolução encontrada.")
 
-        input()
     except Exception as e:
         print(f"Erro inesperado: {e}")
     finally:
