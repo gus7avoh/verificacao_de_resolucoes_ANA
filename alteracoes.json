@@ -1,22 +1,22 @@
 [
   {
-    "id_div": "resolucao_3002025",
-    "Titulo": "Resolução Nº 300, de 03/07/2025",
+    "id_div": "resolucao_4002025",
+    "Titulo": "Resolução Nº 400, de 03/07/2025",
     "Subtitulo": [
-      "teste",
-      "Aprova a Política de Backup e suas regras no âmbito da Agência Nacional de Águas e Saneamento Básico (ANA)."
+      "Ato Normativo",
+      "Dispõe sobre a política de teste em automações desenvolvidas na Arsae, no âmbito da Agência Nacional de Águas e Saneamento Básico (ANA)."
     ],
-    "url": "http://arquivos.ana.gov.br/_viewpdf/web/?file=https://arquivos.ana.gov.br/resolucoes/2025/0NaN-2025_Ato_Normativo_03072025_20250708084656.pdf?12:10:42",
+    "url": "http://arquivos.ana.gov.br/_viewpdf/web/?file=https://arquivos.ana.gov.br/resolucoes/2025/0253-2025_Ato_Normativo_03072025_20250707082717.pdf?12:10:42",
     "estado": "adicionado"
   },
   {
-    "id_div": "resolucao_2542025",
-    "Titulo": "Resolução Nº 254, de 03/07/2025",
+    "id_div": "resolucao_2532025",
+    "Titulo": "Resolução Nº 253, de 03/07/2025",
     "Subtitulo": [
       "Ato Normativo",
-      "Aprova a Política de Backup e suas regras no âmbito da Agência Nacional de Águas e Saneamento Básico (ANA)."
+      "Dispõe sobre a política de segurança da informação e comunicação (POSIC), no âmbito da Agência Nacional de Águas e Saneamento Básico (ANA)."
     ],
-    "url": "http://arquivos.ana.gov.br/_viewpdf/web/?file=https://arquivos.ana.gov.br/resolucoes/2025/0NaN-2025_Ato_Normativo_03072025_20250708084656.pdf?12:10:42",
-    "estado": "removido"
+    "url": "http://arquivos.ana.gov.br/_viewpdf/web/?file=https://arquivos.ana.gov.br/resolucoes/2025/0253-2025_Ato_Normativo_03072025_20250707082717.pdf?12:10:42",
+    "estado": "adicionado"
   }
 ]

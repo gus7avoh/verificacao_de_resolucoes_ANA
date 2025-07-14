@@ -11,11 +11,13 @@ import json
 import os
 
 
+
 CHROME_DRIVER_PATH = r"D:\chromedriver-win64\chromedriver.exe"
 TARGET_URL = "https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/normativos-e-resolucoes/resolucoes"
 CAMINHO_JSON_ATUAL= r"D:\cod\Arsae\Automatiza_arsae\verificacao_de_resolucoes_ANA\atual.json"
 CAMINHO_JSON_ANTIGO= r"D:\cod\Arsae\Automatiza_arsae\verificacao_de_resolucoes_ANA\antigo.json"
 CAMINHO_JSON_ALTERACOES= r"D:\cod\Arsae\Automatiza_arsae\verificacao_de_resolucoes_ANA\alteracoes.json"
+LISTA_EMAILS = ["gustavo.maciel@arsae.com.br"]
 
 
 def aceitar_cookies(driver):
@@ -150,6 +152,42 @@ def atualisar_json_antigo():
     except Exception as erro:
         print(f"erro: {erro}")
 
+import win32com.client
+
+
+
+def Enviar_email_alteracoes_outlook(alteracoes):
+    if not alteracoes:
+        print("Nenhuma alteração para enviar por e-mail.")
+        return
+
+    try:
+        # Cria o corpo do e-mail
+        corpo_email = "Foram detectadas as seguintes alterações:\n\n"
+        for item in alteracoes:
+            corpo_email += f"Estado: {item['estado']}\n\n"
+            corpo_email += f"Título: {item['Titulo']}\n"
+            corpo_email += f"Subtítulo: {' - '.join(item['Subtitulo'])}\n"
+            corpo_email += f"Link: {item['url']}\n"
+            corpo_email += f"ID: {item['id_div']}\n"
+            corpo_email += "-" * 40 + "\n\n\n"
+
+        # Inicializa o Outlook
+        outlook = win32com.client.Dispatch("Outlook.Application")
+        mail = outlook.CreateItem(0)  # 0 = MailItem
+
+        # Define os campos do e-mail
+        mail.To = "; ".join(LISTA_EMAILS)
+        mail.Subject = "Alterações Detectadas no Sistema"
+        mail.Body = corpo_email
+
+        # Envia o e-mail
+        mail.Send()
+
+        print("E-mail enviado com sucesso via Outlook.")
+
+    except Exception as erro:
+        print(f"Erro ao enviar e-mail via Outlook: {erro}")
 
 
 
@@ -183,6 +221,9 @@ def main():
         else:
             print("Nenhuma alteração encontrada.")
 
+        with open(CAMINHO_JSON_ALTERACOES, 'r', encoding='utf-8') as arquivo:
+            dados = json.load(arquivo)
+        Enviar_email_alteracoes_outlook(dados)
         atualisar_json_antigo()
 
 

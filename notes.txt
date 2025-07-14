@@ -1,6 +1,7 @@
-- ao final do programa o json antigo deve receber todos os dados do atual
 
 - Enviar um email notificando as mudaças e descrevelas individualmente 
+
+- Depois de enviar os emails o json de alteracoes deve ser resetado
 
 
 
