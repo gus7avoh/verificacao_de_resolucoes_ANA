@@ -164,37 +164,40 @@ def limpar_json_alteracoes():
 
 
 def Enviar_email_alteracoes_outlook(alteracoes):
-   
-    if not alteracoes:
-         # Garante que o arquivo de contagem exista
-        with open(CAMINHO_JSON_CONTAGEM, 'r', encoding='utf-8') as arquivo:
+    # Garante que o arquivo de contagem exista e seja lido
+    try:
+        if os.path.exists(CAMINHO_JSON_CONTAGEM):
+            with open(CAMINHO_JSON_CONTAGEM, 'r', encoding='utf-8') as arquivo:
                 Contagem = json.load(arquivo)
-                Contagem["Contagem"] += 1
-        print("Nenhuma alteração encontrada .")
+        else:
+            Contagem = {"Contagem": 0}
+    except Exception as e:
+        print(f"Erro ao ler JSON de contagem: {e}")
+        Contagem = {"Contagem": 0}
 
-        if Contagem["Contagem"] >= 7:
-            Contagem["Contagem"] = 0  # zera o contador
+    # CASO NÃO TENHA ALTERAÇÕES
+    if not alteracoes:
+        Contagem["Contagem"] += 1
+        print("Nenhuma alteração encontrada.")
+
+        if Contagem["Contagem"] == 7:
             try:
                 corpo_email = "Nenhuma atualização encontrada durante a semana.\n\n"
-
                 outlook = win32.Dispatch('outlook.application')
                 mail = outlook.CreateItem(0)
-
                 mail.To = "; ".join(EMAIL)
                 mail.Subject = "Sem alterações detectadas em um período de 7 dias"
                 mail.Body = corpo_email
-
                 mail.Send()
                 print("E-mail enviado com sucesso via Outlook (sem alterações).")
-
+                Contagem["Contagem"] = 0  # zera após envio
             except Exception as erro:
                 print(f"Erro ao enviar e-mail via Outlook: {erro}")
 
-        # Salva a contagem atualizada
         salvar_json(Contagem, CAMINHO_JSON_CONTAGEM)
         return
 
-    # Se houve alterações
+    # CASO TENHA ALTERAÇÕES
     try:
         corpo_email = "Foram detectadas as seguintes alterações:\n\n"
         for item in alteracoes:
@@ -207,44 +210,14 @@ def Enviar_email_alteracoes_outlook(alteracoes):
 
         outlook = win32.Dispatch('outlook.application')
         mail = outlook.CreateItem(0)
-
         mail.To = "; ".join(EMAIL)
         mail.Subject = "Alterações Detectadas no Sistema"
         mail.Body = corpo_email
-
         mail.Send()
         print("E-mail enviado com sucesso via Outlook (com alterações).")
 
-        # Zera contagem após envio de alterações
-        Contagem["Contagem"] = 0
+        Contagem["Contagem"] = 0  # zera após envio
         salvar_json(Contagem, CAMINHO_JSON_CONTAGEM)
-
-    except Exception as erro:
-        print(f"Erro ao enviar e-mail via Outlook: {erro}")
-
-    try:
-        # Cria o corpo do e-mail
-        corpo_email = "Foram detectadas as seguintes alterações:\n\n"
-        for item in alteracoes:
-            corpo_email += f"Estado: {item['estado']}\n\n"
-            corpo_email += f"Título: {item['Titulo']}\n"
-            corpo_email += f"Subtítulo: {' - '.join(item['Subtitulo'])}\n"
-            corpo_email += f"Link: {item['url']}\n"
-            corpo_email += f"ID: {item['id_div']}\n"
-            corpo_email += "-" * 40 + "\n\n\n"
-
-        # Inicializa o Outlook
-        outlook = win32.Dispatch('outlook.application')
-        mail = outlook.CreateItem(0)  # 0 = MailItem
-
-        # Define os campos do e-mail
-        mail.To = "; ".join(EMAIL)
-        mail.Subject = "Alterações Detectadas no Sistema"
-        mail.Body = corpo_email
-
-        mail.Send()
-    
-        print("E-mail enviado com sucesso via Outlook.")
 
     except Exception as erro:
         print(f"Erro ao enviar e-mail via Outlook: {erro}")
