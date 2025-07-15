@@ -11,14 +11,14 @@ import json
 import os
 import win32com.client as win32
 
-
-
 CHROME_DRIVER_PATH = r"D:\chromedriver-win64\chromedriver.exe"
 TARGET_URL = "https://www.gov.br/ana/pt-br/assuntos/regulacao-e-fiscalizacao/normativos-e-resolucoes/resolucoes"
 CAMINHO_JSON_ATUAL= r"D:\cod\Arsae\Automatiza_arsae\verificacao_de_resolucoes_ANA\atual.json"
 CAMINHO_JSON_ANTIGO= r"D:\cod\Arsae\Automatiza_arsae\verificacao_de_resolucoes_ANA\antigo.json"
 CAMINHO_JSON_ALTERACOES= r"D:\cod\Arsae\Automatiza_arsae\verificacao_de_resolucoes_ANA\alteracoes.json"
-LISTA_EMAILS = ["gustavoh.a.m1409@gmail.com"]
+CAMINHO_JSON_CONTAGEM= r"D:\cod\Arsae\Automatiza_arsae\verificacao_de_resolucoes_ANA\Contagem.json"
+EMAIL = "gustavoh.a.m1409@gmail.com"
+
 
 
 def aceitar_cookies(driver):
@@ -164,9 +164,67 @@ def limpar_json_alteracoes():
 
 
 def Enviar_email_alteracoes_outlook(alteracoes):
+   
     if not alteracoes:
-        print("Nenhuma alteração para enviar por e-mail.")
+         # Garante que o arquivo de contagem exista
+        with open(CAMINHO_JSON_CONTAGEM, 'r', encoding='utf-8') as arquivo:
+                Contagem = json.load(arquivo)
+                Contagem["Contagem"] += 1
+
+        salvar_json(Contagem, CAMINHO_JSON_CONTAGEM)
+
+        Contagem["Contagem"] += 1
+        print("Nenhuma alteração encontrada !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.")
+
+        if Contagem["Contagem"] >= 7:
+            Contagem["Contagem"] = 0  # zera o contador
+            try:
+                corpo_email = "Nenhuma atualização encontrada durante a semana.\n\n"
+
+                outlook = win32.Dispatch('outlook.application')
+                mail = outlook.CreateItem(0)
+
+                mail.To = "; ".join(EMAIL)
+                mail.Subject = "Sem alterações detectadas em um período de 7 dias"
+                mail.Body = corpo_email
+
+                mail.Send()
+                print("E-mail enviado com sucesso via Outlook (sem alterações).")
+
+            except Exception as erro:
+                print(f"Erro ao enviar e-mail via Outlook: {erro}")
+
+        # Salva a contagem atualizada
+        salvar_json(Contagem, CAMINHO_JSON_CONTAGEM)
         return
+
+    # Se houve alterações
+    try:
+        corpo_email = "Foram detectadas as seguintes alterações:\n\n"
+        for item in alteracoes:
+            corpo_email += f"Estado: {item.get('estado', 'N/A')}\n"
+            corpo_email += f"Título: {item['Titulo']}\n"
+            corpo_email += f"Subtítulo: {' - '.join(item['Subtitulo'])}\n"
+            corpo_email += f"Link: {item['url']}\n"
+            corpo_email += f"ID: {item['id_div']}\n"
+            corpo_email += "-" * 40 + "\n\n"
+
+        outlook = win32.Dispatch('outlook.application')
+        mail = outlook.CreateItem(0)
+
+        mail.To = "; ".join(EMAIL)
+        mail.Subject = "Alterações Detectadas no Sistema"
+        mail.Body = corpo_email
+
+        mail.Send()
+        print("E-mail enviado com sucesso via Outlook (com alterações).")
+
+        # Zera contagem após envio de alterações
+        Contagem["Contagem"] = 0
+        salvar_json(Contagem, CAMINHO_JSON_CONTAGEM)
+
+    except Exception as erro:
+        print(f"Erro ao enviar e-mail via Outlook: {erro}")
 
     try:
         # Cria o corpo do e-mail
@@ -184,7 +242,7 @@ def Enviar_email_alteracoes_outlook(alteracoes):
         mail = outlook.CreateItem(0)  # 0 = MailItem
 
         # Define os campos do e-mail
-        mail.To = "; ".join(LISTA_EMAILS)
+        mail.To = "; ".join(EMAIL)
         mail.Subject = "Alterações Detectadas no Sistema"
         mail.Body = corpo_email
 
@@ -201,14 +259,14 @@ def main():
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--disable-extensions")
     chrome_options.add_argument("--disable-notifications")
-    chrome_options.add_argument("--headless") 
+    #chrome_options.add_argument("--headless") 
 
     service = Service(CHROME_DRIVER_PATH)
     driver = webdriver.Chrome(service=service, options=chrome_options)
     wait = WebDriverWait(driver, 15)
 
     try:
-        #limpar_json_alteracoes()
+        limpar_json_alteracoes()
 
         teste = True
         if teste  == False:
@@ -232,9 +290,9 @@ def main():
 
         with open(CAMINHO_JSON_ALTERACOES, 'r', encoding='utf-8') as arquivo:
             dados = json.load(arquivo)
-        Enviar_email_alteracoes_outlook(dados)
 
-        #atualisar_json_antigo()
+        Enviar_email_alteracoes_outlook(dados)
+        atualisar_json_antigo()
 
     except Exception as e:
         print(f"Erro inesperado: {e}")
