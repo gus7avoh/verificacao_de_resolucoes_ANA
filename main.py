@@ -170,11 +170,7 @@ def Enviar_email_alteracoes_outlook(alteracoes):
         with open(CAMINHO_JSON_CONTAGEM, 'r', encoding='utf-8') as arquivo:
                 Contagem = json.load(arquivo)
                 Contagem["Contagem"] += 1
-
-        salvar_json(Contagem, CAMINHO_JSON_CONTAGEM)
-
-        Contagem["Contagem"] += 1
-        print("Nenhuma alteração encontrada !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.")
+        print("Nenhuma alteração encontrada .")
 
         if Contagem["Contagem"] >= 7:
             Contagem["Contagem"] = 0  # zera o contador
